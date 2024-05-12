@@ -1,23 +1,27 @@
 <?php 
+
 /** Modificar la clase viaje para almacenar el costo del viaje, la suma de los costos abonados por los pasajeros e implementar el método venderPasaje($objPasajero) que debe incorporar el pasajero a la colección de pasajeros ( solo si hay espacio disponible), actualizar los costos abonados y retornar el costo final que deberá ser abonado por el pasajero. */
 
-/** Modificar la clase viaje para almacenar el costo del viaje, la suma de los costos abonados por los pasajeros e implementar el método venderPasaje($objPasajero) que debe incorporar el pasajero a la colección de pasajeros ( solo si hay espacio disponible), actualizar los costos abonados y retornar el costo final que deberá ser abonado por el pasajero.*/
 
 class Viaje {
         private $codigo;
         private $destino;
         private $cantMax;
-        private $objPasajeros;
-        private $objResponsableV;
+        private $objPasajeros; //coleccion de obj
+        private $objResponsableV ; // objeto
 
         private $costo;
-    
-        public function __construct($c,$d,$cantMax, $responsable, $pasajero)   {
+        private $sumaCostos;
+
+        public function __construct($c,$d,$cantMax, $responsable, $pasajero,$costo,$sumaCosto)   {
             $this->codigo = $c;
             $this->destino = $d;
             $this->cantMax = $cantMax;  
             $this->objResponsableV = $responsable;
             $this->objPasajeros = $pasajero;
+            //
+            $this->costo = $costo;
+            $this->sumaCostos = $sumaCosto;
         }
         //GETTERS
         public function getCodigo (){
@@ -51,6 +55,29 @@ class Viaje {
         public function setObjResponsableV($c){
             $this->objResponsableV = $c;
         }
+        
+        public function getCosto()
+        {
+                return $this->costo;
+        }
+
+        public function setCosto($costo)
+        {
+                $this->costo = $costo;
+
+        }
+
+   
+        public function getSumaCostos()
+        {
+                return $this->sumaCostos;
+        }
+
+        public function setSumaCostos($sumaCostos)
+        {
+                $this->sumaCostos = $sumaCostos;
+        }
+
         // esta function accede al arreglo donde estan los viajeros
         // luego recorre todos los elementos (objetos)
         // $arrayPasajeros le asigno el objeto con el metodo de acceso 
@@ -98,4 +125,42 @@ class Viaje {
            "Codigo: ".$this->getCodigo(). " \n ".
            "Cantidad maxima de pasajeros: ". $this->getCantMax() ."\n";
         }
-}
+       
+        
+        public function agregarPasajero($nuevoPasajero){
+            $agregado = false;
+            $cantPasajeros = count($this->getObjPasajeros());
+            $cantMaxima = $this->getCantMax();
+            if ($cantPasajeros < $cantMaxima){
+                $pasajeros = $this->getObjPasajeros();
+                array_push($pasajeros, $nuevoPasajero);
+                $this->setObjPasajeros($pasajeros);
+                $agregado = true;
+            }
+            return $agregado;
+        }
+
+        /** venderPasaje($objPasajero) que debe incorporar el pasajero a la colección de pasajeros ( solo si hay espacio disponible), actualizar los costos abonados y retornar el costo final que deberá ser abonado por el pasajero. */
+       public function venderPasaje($objPasajero){
+
+            $porcentaje = $objPasajero->darPorcentajeIncremento();
+            $costo = $this->getCosto();
+            $sumaCosto = $this->getsumaCostos();
+            $incorporo = $this->agregarPasajero($objPasajero);
+            $precioFinal = 0;
+           
+            if($incorporo){
+                $incremento = $costo * ($porcentaje / 100);
+                $precioFinal = $costo + $incremento;
+               array_push($sumaCosto,$precioFinal);
+               $this->setSumaCostos($sumaCosto);
+            }elseif (!$incorporo){
+                $precioFinal = -1;
+            }
+            return $precioFinal;
+       }
+       /**Implemente la función hayPasajesDisponible() que retorna verdadero si la cantidad de pasajeros del viaje es menor a la cantidad máxima de pasajeros y falso caso contrario */
+       public function hayPasajesDisponibles(){
+        
+       }
+    }
