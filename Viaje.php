@@ -111,7 +111,7 @@ class Viaje {
             $n = count($arregloPasajeros);
             $i = 0;
             while ($i<$n && !$encontrado){
-                if ($arregloPasajeros[$i]->getDni() === $dniBuscado){
+                if ($arregloPasajeros[$i]->getNumTicket() === $dniBuscado){
                     $encontrado = true; 
                  }
                 $i++;
@@ -145,14 +145,15 @@ class Viaje {
 
             $porcentaje = $objPasajero->darPorcentajeIncremento();
             $costo = $this->getCosto();
-            $sumaCosto = $this->getsumaCostos();
+            
             $incorporo = $this->agregarPasajero($objPasajero);
             $precioFinal = 0;
            
             if($incorporo){
                 $incremento = $costo * ($porcentaje / 100);
                 $precioFinal = $costo + $incremento;
-               array_push($sumaCosto,$precioFinal);
+                $sumaCosto = $this->getsumaCostos();
+               $sumaCosto += $precioFinal;
                $this->setSumaCostos($sumaCosto);
             }elseif (!$incorporo){
                 $precioFinal = -1;
@@ -161,6 +162,6 @@ class Viaje {
        }
        /**Implemente la función hayPasajesDisponible() que retorna verdadero si la cantidad de pasajeros del viaje es menor a la cantidad máxima de pasajeros y falso caso contrario */
        public function hayPasajesDisponibles(){
-        
+
        }
     }
