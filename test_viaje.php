@@ -38,6 +38,8 @@ $pasajero6 = new PasajeroVip ("Goku", 11,7,3,250);
 
 $precio = $objetoViaje->venderPasaje($pasajero6);
 
-//echo $precio; // $1350 le queda a Goku 
+//echo $precio; // en $1350 le queda el pasaje a Goku (🤑)
 
 echo $objetoViaje;
+
+// falta metodo hayPasajesDisponible() ._. 
